@@ -37,8 +37,8 @@ min_sleep=450
 max_sleep=900
 
 # Telegram config
-TELEGRAM_BOT_TOKEN="8781656242:AAHk6ZgAADgoCgwzRsKPqDkgtDo_kRjrDto"
-TELEGRAM_CHAT_ID="7381939387"
+TELEGRAM_BOT_TOKEN="YOUR_BOT_TOKEN"
+TELEGRAM_CHAT_ID="YOUR_CHAT_ID"
 
 # Log file
 log_file="./speedtest_log.txt"
