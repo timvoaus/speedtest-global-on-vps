@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Ensure HOME environment variable is set (required by Ookla Speedtest CLI to avoid C++ crash under systemd/cron)
+export HOME="${HOME:-/root}"
+
 # Load server IDs from generated file
 SERVER_IDS_FILE="./speedtest_server_ids.txt"
 
@@ -34,8 +37,8 @@ min_sleep=450
 max_sleep=900
 
 # Telegram config
-TELEGRAM_BOT_TOKEN="8781656242:xxxxxx"
-TELEGRAM_CHAT_ID="xxxxxxx"
+TELEGRAM_BOT_TOKEN="8781656242:AAHk6ZgAADgoCgwzRsKPqDkgtDo_kRjrDto"
+TELEGRAM_CHAT_ID="7381939387"
 
 # Log file
 log_file="./speedtest_log.txt"
@@ -65,7 +68,7 @@ while true; do
 
     tmp_speedtest="./.speedtest_result.tmp"
 
-    speedtest -s "$server_id" | tee "$tmp_speedtest" | tee -a "$log_file"
+    speedtest --accept-license --accept-gdpr -s "$server_id" | tee "$tmp_speedtest" | tee -a "$log_file"
 
     if [[ -n "$TELEGRAM_BOT_TOKEN" && "$TELEGRAM_BOT_TOKEN" != "YOUR_BOT_TOKEN" && -n "$TELEGRAM_CHAT_ID" && "$TELEGRAM_CHAT_ID" != "YOUR_CHAT_ID" ]]; then
 
