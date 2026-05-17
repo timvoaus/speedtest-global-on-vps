@@ -41,27 +41,39 @@ missing_countries.json
 
 Ubuntu 22.04+ recommended
 
-Install dependencies:
-
+### 1. Install System Dependencies
+Install base packages needed for the scripts:
 ```bash
-apt update
-
-apt install -y \
+sudo apt update
+sudo apt install -y \
     curl \
-    jq \
     gawk \
     coreutils \
-    python3 \
-    python3-pip \
-    speedtest \
-    nodejs \
-    npm
+    python3
 ```
 
-Install freeze:
-
+### 2. Install Official Ookla Speedtest CLI
+The scripts require the official Speedtest CLI from Ookla (not the third-party `speedtest-cli` Python package).
 ```bash
-npm install -g freeze-cli
+# Add Ookla APT repository
+curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash
+
+# Install Speedtest
+sudo apt install -y speedtest
+```
+*Note: The first time you run `speedtest` manually, you will be prompted to accept Ookla's license agreement.*
+
+### 3. Install Charmbracelet Freeze
+[Freeze](https://github.com/charmbracelet/freeze) is used to generate beautiful images of the Speedtest results for Telegram.
+```bash
+# Add Charmbracelet APT repository
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://repo.charm.sh/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/charm.gpg
+echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list
+
+# Update package list and install Freeze
+sudo apt update
+sudo apt install -y freeze
 ```
 
 ---
@@ -127,7 +139,7 @@ Stop:
 
 ```bash
 pkill -9 -f speedtest_batch.sh
-pkill -9 -f '/snap/speedtest'
+pkill -9 -f speedtest
 ```
 
 ---
@@ -242,17 +254,17 @@ Index file:
 
 # Sleep Timing
 
-Configured in:
+Configured in `speedtest_batch.sh`:
 
 ```bash
-min_sleep=300
-max_sleep=600
+min_sleep=450
+max_sleep=900
 ```
 
 Meaning:
 
-- minimum 5 minutes
-- maximum 10 minutes
+- minimum 7.5 minutes (450 seconds)
+- maximum 15 minutes (900 seconds)
 
 ---
 
@@ -295,7 +307,7 @@ Kill all:
 
 ```bash
 pkill -9 -f speedtest_batch.sh
-pkill -9 -f '/snap/speedtest'
+pkill -9 -f speedtest
 ```
 
 Check logs:
